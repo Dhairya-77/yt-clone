@@ -20,10 +20,9 @@
             // Loop through each video and generate HTML
             foreach ($videos as $video) {
                 echo '
-                <a href="' . $video['link'] . '" class="bg-purple-800 rounded-lg overflow-hidden shadow-lg cursor-pointer">
+                <a href="' . $video['link'] . '" class="bg-purple-800 rounded-lg overflow-hidden shadow-lg cursor-pointer hover:bg-purple-700 transition-colors duration-300">
                     <video controls class="w-full h-48 object-cover">
                         <source src="' . $video['src'] . '" type="video/mp4">
-                        Your browser does not support the video tag.
                     </video>
                     <div class="p-4">
                         <h3 class="text-lg font-bold">' . $video['title'] . '</h3>

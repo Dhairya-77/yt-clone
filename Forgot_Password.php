@@ -4,7 +4,7 @@
     $username_err_msg='';
     $username='';
     
-    //most probely user name come from databse show user field is not accessible by user
+    //most probely user name come from databse so user field is not accessible by user
     if(isset($_POST['rest_btn'])){
         $username=isset($_POST['username']) ? $_POST['username'] : '';
         if(empty($_POST['username'])){
