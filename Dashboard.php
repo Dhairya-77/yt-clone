@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Page</title>
+    <title>Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-purple-950 text-yellow-400">
@@ -24,8 +24,8 @@
         <!-- Right Side: Upload Image and Profile Image -->
         <div class="flex items-center space-x-4">
             <!-- Upload Button -->
-            <button name="upl_btn" class="flex items-center justify-center w-10 h-10 bg-yellow-400 text-purple-900 rounded-full hover:bg-yellow-400">
-                <img src="req_img//upload_icon.png" title="Upload Video" alt="Upload" class="w-5 h-5">
+            <button name="upl_btn" title="Upload Video" class="flex items-center justify-center w-10 h-10 bg-yellow-400 text-purple-900 rounded-full hover:bg-yellow-400">
+                <img src="req_img//upload_icon.png" alt="Upload" class="w-5 h-5">
             </button>
 
             <!-- Profile Image -->
@@ -50,25 +50,25 @@
 
     <div class="flex">
         <!-- Sidebar -->
-        <aside class="w-40 h-screen bg-purple-800 p-4">
+        <aside class="w-40 flex-shrink-0 bg-purple-800 p-4">
             <nav class="flex flex-col space-y-4">
-                <a href="#" name="home" class="flex items-center space-x-3 hover:bg-purple-700 p-2 rounded">
+                <a href="Dashboard.php?page=Home" name="home" class="flex items-center space-x-3 hover:bg-purple-700 p-2 rounded">
                     <img src="req_img//home_icon.png" alt="Home" class="w-5 h-5">
                     <span>Home</span>
                 </a>
-                <a href="#" name="recent_watched" class="flex items-center space-x-3 hover:bg-purple-700 p-2 rounded">
+                <a href="Dashboard.php?page=Recent_Watched" name="recent_watched" class="flex items-center space-x-3 hover:bg-purple-700 p-2 rounded">
                     <img src="req_img//recent_icon.png" alt="Recent Watched" class="w-5 h-5">
                     <span>Recent Watched</span>
                 </a>
-                <a href="#" name="saved_video" class="flex items-center space-x-3 hover:bg-purple-700 p-2 rounded">
+                <a href="Dashboard.php?page=Saved_Videos" name="saved_videos" class="flex items-center space-x-3 hover:bg-purple-700 p-2 rounded">
                     <img src="req_img//bookmark_icon.png" alt="Saved Videos" class="w-5 h-5">
                     <span>Saved Videos</span>
                 </a>
-                <a href="#" name="subscribed_channels" class="flex items-center space-x-3 hover:bg-purple-700 p-2 rounded">
+                <a href="Dashboard.php?page=Subscribed_Channels" name="subscribed_channels" class="flex items-center space-x-3 hover:bg-purple-700 p-2 rounded">
                     <img src="req_img//subscribe_icon.png" alt="Subscribed Channels" class="w-5 h-5">
                     <span>Subscribed Channels</span>
                 </a>
-                <a href="#" name="your_videos" class="flex items-center space-x-3 hover:bg-purple-700 p-2 rounded">
+                <a href="Dashboard.php?page=Your_Videos" name="your_videos" class="flex items-center space-x-3 hover:bg-purple-700 p-2 rounded">
                     <img src="req_img//video_icon.png" alt="Your Videos" class="w-5 h-5">
                     <span>Your Videos</span>
                 </a>
@@ -77,8 +77,18 @@
 
         <!-- Main Content -->
         <main class="flex-1 p-6">
-            <h2 class="text-3xl font-bold">Dashboard Content</h2>
-            <!-- Add more content here -->
+            <?php
+                // Get the 'page' parameter from the URL
+                $page = isset($_GET['page']) ? $_GET['page'] : 'Home';
+
+                // Construct file path
+                $file = $page . '.php';
+
+                // Check if the file exists and include it
+                if (file_exists($file)) {
+                    include($file);
+                }
+            ?>
         </main>
     </div>
 </body>
