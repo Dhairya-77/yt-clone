@@ -24,9 +24,11 @@
         <!-- Right Side: Upload Image and Profile Image -->
         <div class="flex items-center space-x-4">
             <!-- Upload Button -->
-            <button name="upl_btn" title="Upload Video" class="flex items-center justify-center w-10 h-10 bg-yellow-400 text-purple-900 rounded-full hover:bg-yellow-400">
+            <a href="Upload_Video.php?uid=null">
+                <button name="upl_btn" title="Upload Video" class="flex items-center justify-center w-10 h-10 bg-yellow-400 text-purple-900 rounded-full hover:bg-yellow-400">
                 <img src="req_img//upload_icon.png" alt="Upload" class="w-5 h-5">
-            </button>
+                </button>
+            </a>
 
             <!-- Profile Image -->
             <div class="relative">
@@ -34,7 +36,7 @@
 
                 <!-- Dropdown Menu -->
                 <div id="profile_menu" name="profile_menu" class="hidden absolute right-0 mt-2 w-48 bg-purple-800 border border-yellow-500 shadow-lg rounded-lg overflow-hidden">
-                    <a href="#" name="profile_menu_btn" class="flex items-center px-4 py-2 hover:bg-purple-700">
+                    <a href="Profile.php?uid=null" name="profile_menu_btn" class="flex items-center px-4 py-2 hover:bg-purple-700">
                         <img src="req_img//profile_icon.png" alt="Profile" class="w-5 h-5 mr-2">Profile
                     </a>
                     <a href="#" name="logout_menu_btn" class="flex items-center px-4 py-2 hover:bg-purple-700">
