@@ -7,13 +7,12 @@
         <?php
             // Video data array
             $videos = [
-                ["src" => "videos//acha chhalta hu.mp4", "title" => "Video Title 1", "link" => "video1.html"],
-                ["src" => "videos//triggu cry.mp4", "title" => "Video Title 2", "link" => "video2.html"],
-                ["src" => "videos/video3.mp4", "title" => "Video Title 3", "link" => "video3.html"],
-                ["src" => "videos/video4.mp4", "title" => "Video Title 4", "link" => "video4.html"],
-                ["src" => "videos/video5.mp4", "title" => "Video Title 5", "link" => "video5.html"],
-                ["src" => "videos/video6.mp4", "title" => "Video Title 6", "link" => "video6.html"],
-                ["src" => "videos/video6.mp4", "title" => "Video Title 6", "link" => "video6.html"],
+                ["src" => "videos//acha chhalta hu.mp4", "title" => "Video Title 1", "link" => "Dashboard.php?page=Watch_Area&?vid=null"],
+                ["src" => "videos//triggu cry.mp4", "title" => "Video Title 2", "link" => "Dashboard.php?page=Watch_Area"],
+                ["src" => "videos/video3.mp4", "title" => "Video Title 3", "link" => "Dashboard.php?page=Watch_Area"],
+                ["src" => "videos/video4.mp4", "title" => "Video Title 4", "link" => "Dashboard.php?page=Watch_Area"],
+                ["src" => "videos/video5.mp4", "title" => "Video Title 5", "link" => "Dashboard.php?page=Watch_Area"],
+                ["src" => "videos/video6.mp4", "title" => "Video Title 6", "link" => "Dashboard.php?page=Watch_Area"],
                 // Add more videos as needed
             ];
 
