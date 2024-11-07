@@ -58,7 +58,7 @@
     <div class="bg-purple-800 p-8 rounded-lg shadow-lg w-full max-w-md">
         <!-- Registration Form -->
         <h2 class="text-yellow-400 font-semibold text-center text-3xl mb-6">Registration Form</h2>
-        <form action="#" method="post">
+        <form method="post">
             <div class="mb-4">
                 <!-- Full Name-->
                 <label for="full_name" class="block text-yellow-400">Full Name</label>

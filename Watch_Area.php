@@ -55,7 +55,9 @@
             <!-- Comment Input Box -->
             <form class="flex items-center mb-4">
                 <input type="text" placeholder="Add a comment..." class="w-full p-2 bg-purple-700 text-yellow-400 rounded-md border-2 border-yellow-500 focus:outline-none focus:border-yellow-300">
-                <button type="submit" class="ml-2 bg-purple-600 px-4 py-1 rounded-md transition-colors duration-300 hover:border-yellow-500 border-2 border-transparent">Post</button>
+                <button type="submit" class="ml-2 bg-purple-600 px-4 py-1 rounded-md transition-colors duration-300 hover:border-yellow-500 border-2 border-transparent">
+                    Post
+                </button>
             </form>
 
             <!-- List of Comments -->

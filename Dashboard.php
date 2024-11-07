@@ -26,7 +26,7 @@
         <!-- Right Side: Upload Image and Profile Image -->
         <div class="flex items-center space-x-4">
             <!-- Upload Button -->
-            <a href="Upload_Video.php?uid=null">
+            <a href="Upload_Video.php?uid=1">
                 <button name="upl_btn" title="Upload Video" class="flex items-center justify-center w-10 h-10 bg-yellow-400 text-purple-900 rounded-full hover:bg-yellow-400">
                 <img src="req_img//upload_icon.png" alt="Upload" class="w-5 h-5">
                 </button>
