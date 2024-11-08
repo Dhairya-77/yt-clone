@@ -13,18 +13,20 @@
         <!-- App Logo and Name -->
         <div class="flex items-center">
             <img src="req_img//logo.png" title="VTubes" alt="App Logo" class="h-10 w-10 mr-3">
-            <h1 class="text-xl font-bold">VTubes</h1>
+            <h1 class="text-xl font-bold">VTube</h1>
         </div>
 
         <!-- Search Bar -->
         <div class="flex-1 max-w-lg mx-4">
-            <input type="text" name="search_str" placeholder="Search..." class="w-full p-2 rounded bg-purple-700 text-yellow-400 rounded-md border-2 border-yellow-500 focus:outline-none focus:border-yellow-300">
+            <form action="Dashboard.php?page=Search_Result" method="post">
+                <input type="text" name="search_str" placeholder="Search..." class="w-full p-2 rounded bg-purple-700 text-yellow-400 rounded-md border-2 border-yellow-500 focus:outline-none focus:border-yellow-300">
+            </form>
         </div>
 
         <!-- Right Side: Upload Image and Profile Image -->
         <div class="flex items-center space-x-4">
             <!-- Upload Button -->
-            <a href="Upload_Video.php?uid=null">
+            <a href="Upload_Video.php?uid=1">
                 <button name="upl_btn" title="Upload Video" class="flex items-center justify-center w-10 h-10 bg-yellow-400 text-purple-900 rounded-full hover:bg-yellow-400">
                 <img src="req_img//upload_icon.png" alt="Upload" class="w-5 h-5">
                 </button>

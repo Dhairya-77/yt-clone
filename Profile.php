@@ -10,7 +10,8 @@
     <div class="bg-purple-800 p-8 rounded-lg shadow-lg w-full max-w-md">
         <!-- Profile Form -->
         <h2 class="text-yellow-400 font-semibold text-center text-3xl mb-6">Profile</h2>
-        <form action="#" method="POST" enctype="multipart/form-data">
+
+        <form method="POST">
             <!-- Profile Image Upload -->
             <div class="flex items-center justify-center mb-6">
                 <label for="profileImage" class="relative cursor-pointer">
