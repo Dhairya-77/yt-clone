@@ -1,4 +1,8 @@
 <?php
+       include_once 'Connection.php';
+       $con = new Connection();
+
+
     $fullname='';
     $username='';
     $email='';
@@ -10,13 +14,14 @@
     $pw_err_msg = '';
     $confirm_pw_err_msg = '';
 
-    if(isset($_POST['sign_up_btn']))
+    if(isset($_POST['sign_up_btn'])) // not show error in first time page load
     {
         $fullname = isset($_POST['full_name']) ? $_POST['full_name'] : '';
         $username = isset($_POST['user_name']) ? $_POST['user_name'] : '';
         $email = isset($_POST['email']) ? $_POST['email'] : '';
         $password = isset($_POST['password']) ? $_POST['password'] : '';
         $confirm_pw = isset($_POST['confirm_pw']) ? $_POST['confirm_pw'] : '';
+       
 
 
         // check the emply feilds
@@ -40,6 +45,10 @@
             $confirm_pw_err_msg = 'Confirm Password is required'; // check password
         } elseif ($password !== $confirm_pw) {
             $confirm_pw_err_msg = 'Passwords do not match'; // check password
+        }
+        else{
+        $con->userRecordInsert($fullname,$username,$email,$password);
+        header('Location:Registercode.php');
         }
     }
         
@@ -77,7 +86,7 @@
                 <!-- Email-->
                 <label for="email" class="block text-yellow-400">Email</label>
                 <input type="email" id="email" name="email" placeholder="Enter Your Email" class="h-10 w-full mt-2 px-4 py-2 bg-purple-700 text-yellow-400 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400" value="<?php echo $email;?>">
-                <label for="email" class="block text-red-500 mb-2"><?php echo $email_msg; ?></label>
+                <label for="email" class="block text-red-500 mb-2"><?php echo $email_mess; ?></label>
             </div>
 
             <!-- Password-->
@@ -95,8 +104,9 @@
             </div>
 
             <!-- Button -->
-            <button type="submit" name="sign_up_btn" class="w-full bg-yellow-400 text-purple-950 py-2 rounded-md font-semibold hover:bg-yellow-300 transition duration-300">Submit</button>
+            <button type="submit" id="sign_up_btn" name="sign_up_btn" class="w-full bg-yellow-400 text-purple-950 py-2 rounded-md font-semibold hover:bg-yellow-300 transition duration-300">Submit</button>
         </form>
     </div>
 </body>
 </html>
+
