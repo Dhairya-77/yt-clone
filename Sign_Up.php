@@ -33,7 +33,7 @@
             $user_mess = 'Enter UserName '; // User Name
         }
         if (empty($_POST['email'])) {
-            $email_msg = 'Enter Valid Email';  // Email
+            $email_mess = 'Enter Valid Email';  // Email
         }
         
         if(empty($_POST['password'])){
@@ -48,7 +48,7 @@
         }
         else{
         $con->userRecordInsert($fullname,$username,$email,$password);
-        header('Location:Registercode.php');
+        header('Location:Login.php');
         }
     }
         
@@ -67,7 +67,7 @@
     <div class="bg-purple-800 p-8 rounded-lg shadow-lg w-full max-w-md">
         <!-- Registration Form -->
         <h2 class="text-yellow-400 font-semibold text-center text-3xl mb-6">Registration Form</h2>
-        <form method="post">
+        <form action="#" method="post">
             <div class="mb-4">
                 <!-- Full Name-->
                 <label for="full_name" class="block text-yellow-400">Full Name</label>

@@ -37,5 +37,57 @@
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
+
+        function userRecordInsert($UFullName,$UserName,$UEmail,$UPassword)
+        {
+            $qry='Insert Into User_Information(UFullname,UserName,UEmail,UPassword) values(:a,:b,:c,:d)';
+            $stmt=$this->con->prepare($qry);
+           
+            $stmt->bindParam(':a',$UFullName);
+            $stmt->bindParam(':b',$UserName);
+            $stmt->bindParam(':c',$UEmail);
+            $stmt->bindParam(':d',$UPassword);
+            
+            $stmt->execute();
+        }
+
+
+        function userPasswordUpdate($UPassword,$UserName) // Forgot Password
+        {
+            $qry="update  User_Information set UPassword=:a where UserName=:b";
+            $stmt=$this->con->prepare($qry);
+            $stmt->bindparam(':a',$UPassword);
+            $stmt->bindparam(':b',$UserName);
+            $stmt->execute();
+            echo "<script>alert('Password Change Succesfully');</script>";
+        }
+
+
+        function userlogin($username,$UPassword) // user login
+        {
+            $qry="select UserName,UPassword from User_Information where UserName=:a";
+            $stmt=$this->con->prepare($qry);
+            $stmt->bindparam(':a',$username);
+
+            $stmt->execute();
+
+            $password=$stmt->fetch(PDO::FETCH_ASSOC);
+
+            if($password)
+            {
+                if($UPassword == $password['UPassword'])
+                {
+                    echo "<script>alert('Login Succesfully');</script>";
+                    header('Location:Dashboard.php');
+                }
+                else{
+                    echo "<script>alert('Invalid Password');</script>";
+                }
+            }else{
+                echo "<script>alert('User Not Found');</script>";
+            }
+            
+
+        }
     }
 ?>
