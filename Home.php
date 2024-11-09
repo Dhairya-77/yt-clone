@@ -1,11 +1,10 @@
 <?php
     require_once "db_code.php";
 
-    /*session_start();
-
     if(!isset($_SESSION['uid'])){
         header('location:Login.php');
-    }*/
+        exit;
+    }
 
     $db_obj = new DB();
     $videos_data=$db_obj->getVideoInHome();

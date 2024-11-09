@@ -2,11 +2,12 @@
     //include db file file
     require_once "db_code.php";
 
-    /*session_start();
+    session_start();
 
     if(!isset($_SESSION['uid'])){
         header('location:Login.php');
-    }*/
+        exit;
+    }
 
     $db_obj = new DB();
 
@@ -36,11 +37,11 @@
             $extenstion=pathinfo($_FILES['video_file']['name'],PATHINFO_EXTENSION);
 
             //new file name
-            $new_file_name="video_" .  $_REQUEST['uid']/*$_SESSION['uid']*/ . "_" . date("Ymd_His") . "." . $extenstion;
+            $new_file_name="video_" .  $_SESSION['uid'] . "_" . date("Ymd_His") . "." . $extenstion;
             $save_path=$dir . $new_file_name;
 
             if(move_uploaded_file($_FILES['video_file']['tmp_name'],$save_path)){
-                $db_obj->uploadVideo($save_path,$_POST['video_title'],$_REQUEST['uid']); //$_SESSION['uid']
+                $db_obj->uploadVideo($save_path,$_POST['video_title'],$_SESSION['uid']);
                 header('location:Dashboard.php?page=home');
                 exit();
             }

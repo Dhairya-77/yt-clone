@@ -2,15 +2,16 @@
     ob_start();
     require_once "db_code.php";
 
-    /*session_start();
+    session_start();
 
     if(!isset($_SESSION['uid'])){
         header('location:Login.php');
-    }*/
+        exit;
+    }
 
-    $db_obj = new DB(); //$_SESSION['uid'])
-    $img_data = $db_obj->getProfileImg(1);
-    $img_path=isset($img_data) ? $img_data['img_path'] : "req_img//logo.png" ;
+    $db_obj = new DB();
+    $img_data = $db_obj->getProfileImg($_SESSION['uid']);
+    $img_path=empty($img_data) ? "req_img//profile_icon.png" : $img_data['img_path'] ;
 ?>
 
 <!DOCTYPE html>
@@ -53,11 +54,13 @@
 
                 <!-- Dropdown Menu -->
                 <div id="profile_menu" name="profile_menu" class="hidden absolute right-0 mt-2 w-48 bg-purple-800 border border-yellow-500 shadow-lg rounded-lg overflow-hidden">
-                    <a href="Profile.php?uid=null" name="profile_menu_btn" class="flex items-center px-4 py-2 hover:bg-purple-700">
-                        <img src="req_img//profile_icon.png" alt="Profile" class="w-5 h-5 mr-2">Profile
+                    <a href="Profile.php" name="profile_menu_btn" class="flex items-center px-4 py-2 hover:bg-purple-700">
+                        <img src="req_img//profile_icon.png" alt="Profile" class="w-5 h-5 mr-2">
+                        Profile
                     </a>
-                    <a href="#" name="logout_menu_btn" class="flex items-center px-4 py-2 hover:bg-purple-700">
-                        <img src="req_img//logout_icon.png" alt="Logout" class="w-5 h-5 mr-2">Logout
+                    <a href="Logout.php" name="logout_menu_btn" class="flex items-center px-4 py-2 hover:bg-purple-700">
+                        <img src="req_img//logout_icon.png" alt="Logout" class="w-5 h-5 mr-2">
+                        Logout
                     </a>
                 </div>
             </div>

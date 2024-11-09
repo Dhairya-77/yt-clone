@@ -15,6 +15,17 @@
             }
         }
 
+        //for get user id 
+        public function getUid($un,$pw){
+            $q="select uid from users where username=:a and password=:b";
+            $stmt=$this->con->prepare($q);
+            $stmt->bindParam(":a",$un);
+            $stmt->bindParam(":b",$pw);
+            $stmt->execute();
+            $uid_arr=$stmt->fetch(PDO::FETCH_ASSOC);
+            return $uid_arr['uid'];
+        }
+
         //for uploading the video
         public function uploadVideo($vpath,$vtitle,$uid){
             $q="insert into videos (v_path,v_title,uid) values(:a,:b,:c)";
@@ -89,55 +100,89 @@
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
-    }
 
-    function userRecordInsert($UFullName,$UserName,$UEmail,$UPassword)
+        //for login
+        function userLogin($un,$pw) // user login
         {
-            $qry='Insert Into User_Information(UFullname,UserName,UEmail,UPassword) values(:a,:b,:c,:d)';
-            $stmt= $this->con->prepare($qry);
+            $q="select count(*) from users where username=:a and password=:b";
+            $stmt=$this->con->prepare($q);
+            $stmt->bindparam(':a',$un);
+            $stmt->bindparam(':b',$pw);
+            $stmt->execute();
+
+            $is_exist = $stmt->fetchColumn();
+
+            if($is_exist == 1){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+
+        //for sign up
+        function insertUser($fn,$un,$email,$pw)
+        {
+            $q='Insert Into users (name,username,email,password) values (:a,:b,:c,:d)';
+            $stmt= $this->con->prepare($q);
            
-            $stmt->bindParam(':a',$UFullName);
-            $stmt->bindParam(':b',$UserName);
-            $stmt->bindParam(':c',$UEmail);
-            $stmt->bindParam(':d',$UPassword);
+            $stmt->bindParam(':a',$fn);
+            $stmt->bindParam(':b',$un);
+            $stmt->bindParam(':c',$email);
+            $stmt->bindParam(':d',$pw);
             
             $stmt->execute();
         }
-
-
-        function userPasswordUpdate($UPassword,$UserName) // Forgot Password
-        {
-            $qry="update  User_Information set UPassword=:a where UserName=:b";
-            $stmt=$this->con->prepare($qry);
-            $stmt->bindparam(':a',$UPassword);
-            $stmt->bindparam(':b',$UserName);
-            $stmt->execute();
-            echo "<script>alert('Password Change Succesfully');</script>";
-        }
-
-
-        function userlogin($username,$UPassword) // user login
-        {
-            $qry="select UserName,UPassword from User_Information where UserName=:a";
-            $stmt=$this->con->prepare($qry);
-            $stmt->bindparam(':a',$username);
-
-            $stmt->execute();
-
-            $password=$stmt->fetch(PDO::FETCH_ASSOC);
-
-            if($password)
-            {
-                if($UPassword == $password['UPassword'])
-                {
-                    echo "<script>alert('Login Succesfully');</script>";
-                    header('Location:Dashboard.php');
-                }
-                else{
-                    echo "<script>alert('Invalid Password');</script>";
-                }
-            }else{
-                echo "<script>alert('User Not Found');</script>";
+        //checking user is unique or not
+        public function isUserPresent($un,$id=null){
+            $q='select * from users where username=:a';
+            if($id!==null){
+                $q=$q. ' and uid != :b';
             }
+            $stmt=$this->con->prepare($q);
+            $stmt->bindParam(':a',$un);
+
+            if($id!==null){
+               $stmt->bindParam(':b',$id);
+            }
+            $stmt->execute();
+
+            return $stmt->rowCount()>0;
         }
+
+        //for forgot passwords
+        function updatePassword($un,$pw) 
+        {
+            $q="update users set password=:a where username=:b";
+            $stmt=$this->con->prepare($q);
+            $stmt->bindparam(':a',$pw);
+            $stmt->bindparam(':b',$un);
+            $stmt->execute();
+        }
+
+        //for get profile info
+        function getProfileInfo($uid) 
+        {
+            $q="select name,username,email,img_path from users uid=:a";
+            $stmt=$this->con->prepare($q);
+            $stmt->bindparam(':a',$uid);
+            $stmt->execute();
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+
+        //for profile update
+        function updateProfile($fn,$un,$email,$img,$uid) 
+        {
+            $q="update users set name=:a,username=:b,email=:c,img_path=:d where uid=:e";
+            $stmt=$this->con->prepare($q);
+            $stmt->bindparam(':a',$fn);
+            $stmt->bindparam(':b',$un);
+            $stmt->bindparam(':c',$email);
+            $stmt->bindparam(':d',$img);
+            $stmt->bindparam(':a',$pw);
+            $stmt->bindparam(':e',$uid);
+
+            $stmt->execute();
+        }
+    }
 ?>
