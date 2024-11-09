@@ -96,7 +96,7 @@
                 <label for="password" class="block text-red-500 mb-2"><?php echo $pw_err_msg; ?></label>
             </div>
 
-<!-- COnfirm Password-->
+            <!-- Confirm Password-->
             <div class="mb-6">
                 <label for="confirm_pw" class="block text-yellow-400">Confirm Password</label>
                 <input type="password" id="confirm_pw" name="confirm_pw" placeholder="Confirm Your Password" class="h-10 w-full mt-2 px-4 py-2 bg-purple-700 text-yellow-400 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400" value="<?php echo $password;?>">

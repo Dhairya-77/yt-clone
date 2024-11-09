@@ -1,3 +1,18 @@
+<?php
+    ob_start();
+    require_once "db_code.php";
+
+    /*session_start();
+
+    if(!isset($_SESSION['uid'])){
+        header('location:Login.php');
+    }*/
+
+    $db_obj = new DB(); //$_SESSION['uid'])
+    $img_data = $db_obj->getProfileImg(1);
+    $img_path=isset($img_data) ? $img_data['img_path'] : "req_img//logo.png" ;
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,7 +41,7 @@
         <!-- Right Side: Upload Image and Profile Image -->
         <div class="flex items-center space-x-4">
             <!-- Upload Button -->
-            <a href="Upload_Video.php?uid=1">
+            <a href="Upload_Video.php">
                 <button name="upl_btn" title="Upload Video" class="flex items-center justify-center w-10 h-10 bg-yellow-400 text-purple-900 rounded-full hover:bg-yellow-400">
                 <img src="req_img//upload_icon.png" alt="Upload" class="w-5 h-5">
                 </button>
@@ -34,7 +49,7 @@
 
             <!-- Profile Image -->
             <div class="relative">
-                <img src="req_img//profile_icon.png" id="profile_btn" name="profile_btn" alt="Profile" class="h-10 w-10 rounded-full cursor-pointer">
+                <img src="<?php echo $img_path;?>" id="profile_btn" name="profile_btn" alt="Profile" class="h-10 w-10 rounded-full cursor-pointer">
 
                 <!-- Dropdown Menu -->
                 <div id="profile_menu" name="profile_menu" class="hidden absolute right-0 mt-2 w-48 bg-purple-800 border border-yellow-500 shadow-lg rounded-lg overflow-hidden">
@@ -106,3 +121,7 @@
         });
 </script>
 </html>
+
+<?php
+    ob_end_flush();
+?>

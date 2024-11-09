@@ -40,7 +40,7 @@
             $save_path=$dir . $new_file_name;
 
             if(move_uploaded_file($_FILES['video_file']['tmp_name'],$save_path)){
-                $db_obj->uploadVideo($save_path,$_POST['video_title'],$_REQUEST['uid']);
+                $db_obj->uploadVideo($save_path,$_POST['video_title'],$_REQUEST['uid']); //$_SESSION['uid']
                 header('location:Dashboard.php?page=home');
                 exit();
             }
