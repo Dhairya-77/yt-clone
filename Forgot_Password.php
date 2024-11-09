@@ -1,12 +1,18 @@
 <?php
+    include_once 'Connection.php';
+    $con = new Connection();
+
+
     $pw_err_msg='';
     $confirm_pw_err_msg='';
     $username_err_msg='';
     $username='';
+    $password='';
     
     //most probely user name come from databse so user field is not accessible by user
     if(isset($_POST['rest_btn'])){
         $username=isset($_POST['username']) ? $_POST['username'] : '';
+        $password=isset($_POST['new_pw']) ? $_POST['new_pw'] : '';
         if(empty($_POST['username'])){
             $username_err_msg='Enter Username';
         }
@@ -15,6 +21,9 @@
         }
         if(empty($_POST['confirm_pw'])){
             $confirm_pw_err_msg='Enter Confirm Password';
+        }
+        else{
+            $con->userPasswordUpdate($password,$username);
         }
     }
 ?>
