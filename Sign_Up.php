@@ -21,7 +21,7 @@
     {
         $fullname = isset($_POST['full_name']) ? $_POST['full_name'] : '';
         $username = isset($_POST['user_name']) ? $_POST['user_name'] : '';
-        $email = isset($_POST['user_name']) ? $_POST['email'] : '';
+        $email = isset($_POST['email']) ? $_POST['email'] : '';
         $password = isset($_POST['password']) ? $_POST['password'] : '';
         $confirm_pw = isset($_POST['confirm_pw']) ? $_POST['confirm_pw'] : '';
 
@@ -50,7 +50,7 @@
                 $confirm_pw_err_msg='Enter Confirm Password';
             }
         }
-        else if($con_obj->isUserPresent($_POST['user_name'])){
+        else if($db_obj->isUserPresent($_POST['user_name'])){
             $username_err='UserName is aleady exist';
         }
         else if(!preg_match('/^[a-zA-Z0-9.]+@[a-zA-Z.]+\.[a-zA-Z]{2,}$/',$_POST['email'])){

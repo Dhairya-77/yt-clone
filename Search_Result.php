@@ -35,7 +35,7 @@
         else{
             foreach ($videos_data as $v_data) {
                 echo '
-                <a href="' . "Dashboard.php?page=Watch_Area&?vid=" . $v_data['v_id'] . '" class="block">
+                <a href="' . "Dashboard.php?page=Watch_Area&vid=" . $v_data['v_id'] . '" class="block">
                     <div class="flex items-center bg-purple-800 rounded-lg overflow-hidden shadow-lg p-4 space-x-6 hover:bg-purple-700 transition-colors duration-300">
                         <!-- Video Element -->
                         <div class="flex-shrink-0">

@@ -32,7 +32,7 @@
             // Loop through each video and generate HTML
             foreach ($videos_data as $v_data) {
                 echo '
-                <a href="' . "Dashboard.php?page=Watch_Area&?vid=" . $v_data['v_id'] . '" class="bg-purple-800 rounded-lg overflow-hidden shadow-lg cursor-pointer hover:bg-purple-700 transition-colors duration-300">
+                <a href="' . "Dashboard.php?page=Watch_Area&vid=" . $v_data['v_id'] . '" class="bg-purple-800 rounded-lg overflow-hidden shadow-lg cursor-pointer hover:bg-purple-700 transition-colors duration-300">
                     <video controls class="w-full h-48 object-cover">
                         <source src="' . $v_data['v_path'] . '" type="video/mp4">
                     </video>

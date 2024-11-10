@@ -11,7 +11,7 @@
 
     $db_obj = new DB();
     $img_data = $db_obj->getProfileImg($_SESSION['uid']);
-    $img_path=empty($img_data) ? "req_img//profile_icon.png" : $img_data['img_path'] ;
+    $img_path=empty($img_data['img_path']) ? "req_img//profile_icon.png" : $img_data['img_path'] ;
 ?>
 
 <!DOCTYPE html>
@@ -28,7 +28,7 @@
     <header class="flex items-center justify-between p-4 bg-purple-800 shadow-lg">
         <!-- App Logo and Name -->
         <div class="flex items-center">
-            <img src="req_img//logo.png" title="VTubes" alt="App Logo" class="h-10 w-10 mr-3">
+            <img src="req_img//logo.png" title="VTube" alt="App Logo" class="h-10 w-10 mr-3">
             <h1 class="text-xl font-bold">VTube</h1>
         </div>
 
