@@ -5,31 +5,27 @@ CREATE DATABASE `casestudy` CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 CREATE TABLE `like_dislike` (
   `v_id` int(11) NOT NULL,
   `liked_by` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`liked_by`)),
-  `disliked_by` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`disliked_by`)),
-  PRIMARY KEY (`v_id`)
+  `disliked_by` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`disliked_by`))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Table structure for table `recent_watched`
 CREATE TABLE `recent_watched` (
   `v_id` int(11) NOT NULL,
   `watched_by` int(11) NOT NULL,
-  `watched_date` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`v_id`, `watched_by`)
+  `watched_date` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Table structure for table `saved_videos`
 CREATE TABLE `saved_videos` (
   `v_id` int(11) NOT NULL,
   `saved_by` int(11) NOT NULL,
-  `saved_date` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`v_id`, `saved_by`)
+  `saved_date` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Table structure for table `subscribers`
 CREATE TABLE `subscribers` (
   `uid` int(11) NOT NULL,
-  `subscribers` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`subscribers`)),
-  PRIMARY KEY (`uid`)
+  `subscribers` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`subscribers`))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Table structure for table `users`
