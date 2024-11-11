@@ -51,7 +51,7 @@
             }
         }
         else if($db_obj->isUserPresent($_POST['user_name'])){
-            $username_err='UserName is aleady exist';
+            $username_err_msg='UserName is aleady exist';
         }
         else if(!preg_match('/^[a-zA-Z0-9.]+@[a-zA-Z.]+\.[a-zA-Z]{2,}$/',$_POST['email'])){
             $email_err_msg='Enter mail in proper format';
