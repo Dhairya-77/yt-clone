@@ -326,7 +326,7 @@
             return $result['subscribers'];
         }
 
-        //update subscriber count
+        //update increment subscriber count
         function incSubCount($vid){
             $q='update users set subscribers=subscribers+1 where uid=:a';
             $stmt=$this->con->prepare($q);
@@ -387,7 +387,7 @@
             return $stmt->fetchAll(PDO::FETCH_ASSOC); 
         }
 
-        //update subscriber count
+        //update decrement subscriber count
         function dcrSubCount($channel_uid){
             $q='update users set subscribers=subscribers - 1  where uid=:a';
             $stmt=$this->con->prepare($q);
@@ -399,7 +399,7 @@
         public function unsunscribe($channel_uid,$cuurent_uid)
         {
             //etrieve current subscribers list for the given channel
-             $q = 'SELECT subscribers FROM subscribers WHERE uid = :a';
+            $q = 'SELECT subscribers FROM subscribers WHERE uid = :a';
             $stmt = $this->con->prepare($q);
             $stmt->bindParam(':a', $channel_uid);
             $stmt->execute();
@@ -427,5 +427,153 @@
                 }
             }
         } 
+
+        //for decrement or increment like counter
+        private function updateLikeCounter($vid, $increment) {
+            $q = "UPDATE videos SET v_like = GREATEST(v_like + :a, 0) WHERE v_id = :b";
+            $stmt = $this->con->prepare($q);
+            $stmt->bindParam(":a", $increment);
+            $stmt->bindParam(":b", $vid);
+            $stmt->execute();
+        }
+
+        //for decrement or increment dislike counter
+        private function updateDislikeCounter($vid, $increment) {
+            $q = "UPDATE videos SET v_dislike = GREATEST(v_dislike + :a, 0) WHERE v_id = :b";
+            $stmt = $this->con->prepare($q);
+            $stmt->bindParam(":a", $increment);
+            $stmt->bindParam(":b", $vid);
+            $stmt->execute();
+        }
+
+        //insert like and remove dislike
+        public function insertLike($vid, $uid) {
+            $this->initializeLikeDislikeEntry($vid);
+        
+            // Step 1: Retrieve current liked_by and disliked_by lists
+            $q = 'SELECT liked_by, disliked_by FROM like_dislike WHERE v_id = :vid';
+            $stmt = $this->con->prepare($q);
+            $stmt->bindParam(':vid', $vid);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+            $likedBy = $result['liked_by'] ? json_decode($result['liked_by'], true) : [];
+            $dislikedBy = $result['disliked_by'] ? json_decode($result['disliked_by'], true) : [];
+        
+            // Step 2: Update lists and counters if necessary
+            if (!in_array($uid, $likedBy)) {
+                $likedBy[] = $uid;
+                $dislikedBy = array_diff($dislikedBy, [$uid]); // Remove user from disliked_by if present
+        
+                // Step 3: Update database with new lists
+                $q = "UPDATE like_dislike SET liked_by = :liked, disliked_by = :disliked WHERE v_id = :vid";
+                $stmt = $this->con->prepare($q);
+                $stmt->bindValue(':liked', json_encode(array_values($likedBy)));
+                $stmt->bindValue(':disliked', json_encode(array_values($dislikedBy)));
+                $stmt->bindParam(':vid', $vid);
+                $stmt->execute();
+        
+                // Update counters in videos table
+                $this->updateLikeCounter($vid, +1);
+                $this->updateDislikeCounter($vid, -1);
+            }
+        }        
+
+        //insert dislike and remove like
+        public function insertDislike($vid, $uid) {
+            $this->initializeLikeDislikeEntry($vid);
+        
+            // Step 1: Retrieve current liked_by and disliked_by lists
+            $q = 'SELECT liked_by, disliked_by FROM like_dislike WHERE v_id = :vid';
+            $stmt = $this->con->prepare($q);
+            $stmt->bindParam(':vid', $vid);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+            $likedBy = $result['liked_by'] ? json_decode($result['liked_by'], true) : [];
+            $dislikedBy = $result['disliked_by'] ? json_decode($result['disliked_by'], true) : [];
+        
+            // Step 2: Update lists and counters if necessary
+            if (!in_array($uid, $dislikedBy)) {
+                $dislikedBy[] = $uid;
+                $likedBy = array_diff($likedBy, [$uid]); // Remove user from liked_by if present
+        
+                // Step 3: Update database with new lists
+                $q = "UPDATE like_dislike SET liked_by = :liked, disliked_by = :disliked WHERE v_id = :vid";
+                $stmt = $this->con->prepare($q);
+                $stmt->bindValue(':liked', json_encode(array_values($likedBy)));
+                $stmt->bindValue(':disliked', json_encode(array_values($dislikedBy)));
+                $stmt->bindParam(':vid', $vid);
+                $stmt->execute();
+        
+                // Update counters in videos table
+                $this->updateLikeCounter($vid, -1);
+                $this->updateDislikeCounter($vid, +1);
+            }
+        }
+
+        // Initialize entry in like_dislike if it doesn't exist
+        private function initializeLikeDislikeEntry($vid) {
+            $q = "INSERT INTO like_dislike (v_id, liked_by, disliked_by) 
+                  SELECT :vid, '[]', '[]' 
+                  WHERE NOT EXISTS (SELECT 1 FROM like_dislike WHERE v_id = :vid)";
+            $stmt = $this->con->prepare($q);
+            $stmt->bindParam(":vid", $vid);
+            $stmt->execute();
+        }
+
+        //get like count
+        public function likeCounter($vid) {
+            $q = 'select v_like from videos where v_id = :a';
+            $stmt = $this->con->prepare($q);
+            $stmt->bindParam(':a',$vid);
+            $stmt->execute();
+            return $stmt->fetchColumn();
+        }
+    
+        //get dislike count
+        public function dislikeCounter($vid) {
+            $q = 'select v_dislike from videos where v_id = :a';
+            $stmt = $this->con->prepare($q);
+            $stmt->bindParam(':a',$vid);
+            $stmt->execute();
+            return $stmt->fetchColumn();
+        }
+       
+        //is liked by current user
+        public function isLikedBy($vid, $uid) {
+            $q = "SELECT liked_by FROM like_dislike WHERE v_id = :vid";
+            $stmt = $this->con->prepare($q);
+            $stmt->bindParam(":vid", $vid);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            // Check if the result is valid (not false)
+            if ($result) {
+                // Check if user ID is in the liked_by list (comma-separated string)
+                return (strpos($result['liked_by'], (string)$uid) !== false);
+            }
+        
+            // If no result is found, return false (the video is not liked by the user)
+            return false;
+        }
+
+        //is disliked by current user
+        public function isDislikedBy($vid, $uid) {
+            $q = "SELECT disliked_by FROM like_dislike WHERE v_id = :vid";
+            $stmt = $this->con->prepare($q);
+            $stmt->bindParam(":vid", $vid);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            // Check if the result is valid (not false)
+            if ($result) {
+                // Check if user ID is in the disliked_by list (comma-separated string)
+                return (strpos($result['disliked_by'], (string)$uid) !== false);
+            }
+        
+            // If no result is found, return false (the video is not disliked by the user)
+            return false;
+        }
     }
 ?>

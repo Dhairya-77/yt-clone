@@ -34,7 +34,7 @@
         ];*/
 
         // Loop through each video and generate HTML
-        if(empty($videos_data)){
+        if(empty($your_videos_data)){
             echo 'Not Uploaded Any Video :( <br>';
         }
         else{

@@ -17,6 +17,11 @@
     $subscribe_btn_text= $db_obj->isUserSubscribed($_REQUEST['vid'],$_SESSION['uid']) ? 'Subscribed' : 'Subscribe';
     $sub_count= $db_obj->subCount($_REQUEST['vid']);
 
+    $like_btn_img=$db_obj->isLikedBy($_REQUEST['vid'],$_SESSION['uid']) ? 'req_img//like.png' : 'req_img//not_like.png';
+    $like_count= $db_obj->likeCounter($_REQUEST['vid']);
+    $dislike_btn_img=$db_obj->isDislikedBy($_REQUEST['vid'],$_SESSION['uid']) ? 'req_img//dislike.png' : 'req_img//not_dislike.png';
+    $dislike_count=$db_obj->dislikeCounter($_REQUEST['vid']);
+
     //code for add vdeio info in recent watched
     if (!isset($_SESSION['watch_start_time'])) {
         $_SESSION['watch_start_time'] = time();
@@ -61,6 +66,34 @@
         }
     }
 
+    //code for like dislike maagagement
+    if(!$db_obj->isLikedBy($_REQUEST['vid'],$_SESSION['uid'])){
+
+        if(isset($_POST['like_btn'])){
+            $db_obj->insertLike($_REQUEST['vid'],$_SESSION['uid']);
+
+            $like_btn_img='req_img//like.png';
+            $dislike_btn_img='req_img//not_dislike.png';
+
+            $like_count=$db_obj->likeCounter($_REQUEST['vid']);
+            $dislike_count=$db_obj->dislikeCounter($_REQUEST['vid']);
+        }
+    }
+
+    if(!$db_obj->isDislikedBy($_REQUEST['vid'],$_SESSION['uid'])){
+
+        if(isset($_POST['dislike_btn'])){
+            $db_obj->insertDislike($_REQUEST['vid'],$_SESSION['uid']);
+
+            $like_btn_img='req_img//not_like.png';
+            $dislike_btn_img='req_img//dislike.png';
+
+            $like_count=$db_obj->likeCounter($_REQUEST['vid']);
+            $dislike_count=$db_obj->dislikeCounter($_REQUEST['vid']);
+
+        }
+    }
+
 ?>
 
 <main class="flex-1 p-6">
@@ -84,14 +117,14 @@
                 <div class="flex items-center gap-4">
                     <!-- Like Button -->
                     <button type="submit" name="like_btn" class="flex items-center">
-                        <img src="req_img/not_like.png" alt="Like" class="w-6 h-6 mr-1"> 
-                        <span id="likeCount">10</span>
+                        <img src="<?php echo $like_btn_img;?>" alt="Like" class="w-6 h-6 mr-1"> 
+                        <span><?php echo $like_count;?></span>
                     </button>
 
                      <!-- Dislike Button -->
                     <button type="submit" name="dislike_btn" class="flex items-center">
-                        <img src="req_img/not_dislike.png" alt="Dislike" class="w-6 h-6 mr-1"> 
-                        <span id="dislikeCount">3</span>
+                        <img src="<?php echo $dislike_btn_img;?>" alt="Dislike" class="w-6 h-6 mr-1"> 
+                        <span><?php echo $dislike_count;?></span>
                     </button>
 
                     <!-- Share Button -->
@@ -164,64 +197,6 @@
 </main>
 
 <script>
-    // Like button functionality
-    let liked = false;
-    let likeCount = 10;
-    
-    document.getElementById('likeBtn').addEventListener('click', function() {
-        liked = !liked;
-        likeCount = liked ? likeCount + 1 : likeCount - 1;
-        document.getElementById('likeCount').innerText = likeCount;
-        document.getElementById('likeBtn').querySelector('img').src = liked ? 'req_img/like.png' : 'req_img/not_like.png';
-        
-        if (disliked) {
-            disliked = false;
-            dislikeCount -= 1;
-            document.getElementById('dislikeCount').innerText = dislikeCount;
-            document.getElementById('dislikeBtn').querySelector('img').src = 'req_img/not_dislike.png';
-        }
-    });
-
-    // Dislike button functionality
-    let disliked = false;
-    let dislikeCount = 3;
-    
-    document.getElementById('dislikeBtn').addEventListener('click', function() {
-        disliked = !disliked;
-        dislikeCount = disliked ? dislikeCount + 1 : dislikeCount - 1;
-        document.getElementById('dislikeCount').innerText = dislikeCount;
-        document.getElementById('dislikeBtn').querySelector('img').src = disliked ? 'req_img/dislike.png' : 'req_img/not_dislike.png';
-
-        if (liked) {
-            liked = false;
-            likeCount -= 1;
-            document.getElementById('likeCount').innerText = likeCount;
-            document.getElementById('likeBtn').querySelector('img').src = 'req_img/not_like.png';
-        }
-    });
-
-    // Save button functionality
-    /*let saved = false;
-
-    document.getElementById('saveBtn').addEventListener('click', function() {
-        saved = !saved;
-        document.getElementById('saveBtn').querySelector('img').src = saved ? 'req_img/saved.png' : 'req_img/bookmark_icon.png';
-        document.getElementById('saveBtn').querySelector('span').innerText = saved ? 'Saved' : 'Save';
-    });*/
-
-    // Subscribe button functionality
-    /*let subscribed = false;
-    let subscriberCount = 123000;
-    
-    document.getElementById('subscribeBtn').addEventListener('click', function() {
-        subscribed = !subscribed;
-        subscriberCount += subscribed ? 1 : -1;
-        document.getElementById('subscribeBtn').classList.toggle('bg-purple-700', subscribed);
-        document.getElementById('subscribeBtn').classList.toggle('bg-purple-600', !subscribed);
-        document.getElementById('subscribeBtn').innerText = subscribed ? 'Subscribed' : 'Subscribe';
-        document.getElementById('subscriberCount').innerText = subscriberCount.toLocaleString() + " subscribers";
-    });*/
-
     // Copy URL functionality for the Share button
     function copyURL() {
         const videoURL = window.location.href;

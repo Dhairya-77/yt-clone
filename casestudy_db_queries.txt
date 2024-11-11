@@ -1,0 +1,60 @@
+-- Create the database
+CREATE DATABASE `casestudy` CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+
+-- Table structure for table `like_dislike`
+CREATE TABLE `like_dislike` (
+  `v_id` int(11) NOT NULL,
+  `liked_by` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`liked_by`)),
+  `disliked_by` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`disliked_by`)),
+  PRIMARY KEY (`v_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Table structure for table `recent_watched`
+CREATE TABLE `recent_watched` (
+  `v_id` int(11) NOT NULL,
+  `watched_by` int(11) NOT NULL,
+  `watched_date` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`v_id`, `watched_by`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Table structure for table `saved_videos`
+CREATE TABLE `saved_videos` (
+  `v_id` int(11) NOT NULL,
+  `saved_by` int(11) NOT NULL,
+  `saved_date` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`v_id`, `saved_by`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Table structure for table `subscribers`
+CREATE TABLE `subscribers` (
+  `uid` int(11) NOT NULL,
+  `subscribers` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`subscribers`)),
+  PRIMARY KEY (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Table structure for table `users`
+CREATE TABLE `users` (
+  `uid` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) NOT NULL,
+  `email` varchar(40) NOT NULL,
+  `username` varchar(30) NOT NULL,
+  `password` varchar(15) NOT NULL,
+  `subscribers` int(11) NOT NULL DEFAULT 0,
+  `img_path` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`uid`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Table structure for table `videos`
+CREATE TABLE `videos` (
+  `v_id` int(11) NOT NULL AUTO_INCREMENT,
+  `v_path` varchar(50) NOT NULL,
+  `v_title` varchar(100) NOT NULL,
+  `uid` int(11) NOT NULL,
+  `v_like` int(11) NOT NULL DEFAULT 0,
+  `v_dislike` int(11) NOT NULL DEFAULT 0,
+  `v_comments` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `v_date` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`v_id`),
+  FOREIGN KEY (`uid`) REFERENCES `users` (`uid`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
